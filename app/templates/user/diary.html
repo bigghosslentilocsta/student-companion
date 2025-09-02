@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}My Diary{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>My Diary</h2>
+    <p>A private space for your thoughts and reflections.</p>
+</div>
+
+<div class="diary-container">
+    <div class="diary-form-card">
+        <h3>New Entry for {{ today }}</h3>
+        <form action="{{ url_for('main.add_diary_entry') }}" method="POST">
+            <div class="form-group">
+                <textarea id="diary_content" name="diary_content" rows="8" placeholder="What's on your mind?" required></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Save Entry</button>
+        </form>
+    </div>
+
+    <div class="diary-entries">
+        <h3>Past Entries</h3>
+        {% for entry in entries %}
+        <div class="entry-card">
+            <div class="entry-card-header">
+                <h4>{{ entry.timestamp.strftime('%A, %B %d, %Y') }}</h4>
+                <a href="{{ url_for('main.delete_diary_entry', entry_id=entry._id) }}" class="entry-delete-btn">✗</a>
+            </div>
+            <p class="entry-content">{{ entry.content | safe }}</p> {# Use safe filter to render line breaks #}
+        </div>
+        {% else %}
+        <p>You haven't written any diary entries yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

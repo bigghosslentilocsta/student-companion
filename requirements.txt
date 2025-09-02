@@ -1,0 +1,7 @@
+Flask
+pymongo
+python-dotenv
+Flask-Login
+google-generativeai
+Markdown
+beautifulsoup4

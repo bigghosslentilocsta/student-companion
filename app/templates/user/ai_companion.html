@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}AI Companion{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>AI Companion</h2>
+    <p>Ask me anything about your notes, tasks, or general knowledge questions.</p>
+</div>
+
+<div class="chat-container">
+    <div id="chat-window" class="chat-window">
+        <div class="message ai-message">
+            <p>Hello, {{ current_user.fullname }}! How can I help you study or get organized today?</p>
+        </div>
+    </div>
+    <form id="chat-form" class="chat-form">
+        <input type="text" id="message-input" placeholder="Ask a question..." autocomplete="off" required>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

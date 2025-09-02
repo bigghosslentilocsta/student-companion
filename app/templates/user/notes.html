@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}My Notes{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>My Notes</h2>
+    <p>A central place for all your thoughts and study materials.</p>
+</div>
+
+<div class="notes-container">
+    <div class="note-form-card">
+        <h3>Add a New Note</h3>
+        <form action="{{ url_for('main.add_note') }}" method="POST">
+            <div class="form-group">
+                <label for="note_title">Title</label>
+                <input type="text" id="note_title" name="note_title" required>
+            </div>
+            <div class="form-group">
+                <label for="note_content">Content</label>
+                <textarea id="note_content" name="note_content" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file_url">File Link (Optional)</label>
+                <input type="text" id="file_url" name="file_url" placeholder="Paste a shareable link here...">
+            </div>
+            <button type="submit" class="btn-primary">Save Note</button>
+        </form>
+    </div>
+
+    <div class="notes-grid">
+        {% for note in notes %}
+        <div class="note-card">
+            <div class="note-card-body">
+                <div class="note-card-header">
+                    <h4>{{ note.title }}</h4>
+                    <a href="{{ url_for('main.delete_note', note_id=note._id) }}" class="note-delete-btn">✗</a>
+                </div>
+                <p class="note-content">{{ note.content | truncate(100) }}</p>
+                {% if note.file_url %}
+                    <a href="{{ note.file_url }}" target="_blank" class="btn-secondary" style="margin-top: 10px;">🔗 View Attached File</a>
+                {% endif %}
+                <small class="note-timestamp">{{ note.timestamp.strftime('%B %d, %Y') }}</small>
+            </div>
+        </div>
+        {% else %}
+        <p>You haven't created any notes yet. Add one to get started!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

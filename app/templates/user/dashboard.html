@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h2>Welcome back, {{ current_user.fullname }}!</h2>
+    <p>Here's a snapshot of your day.</p>
+</div>
+
+<div class="dashboard-grid">
+    <div class="widget">
+        <h3>🎯 Today's Focus</h3>
+        <form action="{{ url_for('main.add_task') }}" method="POST" class="add-task-form">
+            <input type="text" name="task_content" placeholder="Add a new task..." required>
+            <select name="priority" class="priority-select">
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <button type="submit">+</button>
+        </form>
+        
+        <ul class="task-list">
+            {% for task in tasks %}
+                <li class="{% if task.completed %}completed{% endif %}">
+                    
+                    {% if task.priority %}
+                        <span class="priority-indicator priority-{{ task.priority.level.lower() }}"></span>
+                    {% endif %}
+                    
+                    <span class="task-content">{{ task.content }}</span>
+                    <div class="task-actions">
+                        {% if not task.completed %}
+                            <a href="{{ url_for('main.complete_task', task_id=task._id) }}" class="action-btn complete-btn">✓</a>
+                        {% endif %}
+                        <a href="{{ url_for('main.delete_task', task_id=task._id) }}" class="action-btn delete-btn">✗</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="no-tasks">No tasks yet. Add one above!</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="widget">
+        <h3>📚 Recent Notes</h3>
+        <ul>
+            {% for note in notes %}
+                <li>{{ note.title }}</li>
+            {% else %}
+                <li class="no-tasks">No recent notes.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="widget">
+        <h3>💡 AI Insights</h3>
+        <p>{{ ai_summary }}</p>
+    </div>
+</div>
+{% endblock %}
