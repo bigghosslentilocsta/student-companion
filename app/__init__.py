@@ -10,8 +10,8 @@ load_dotenv()
 
 MONGO_URI = os.getenv('MONGO_URI')
 
-# --- THIS IS THE DEFINITIVE FIX ---
-# We are explicitly telling MongoClient to use certifi's certificates for the secure connection.
+# --- THIS IS THE DEFINITIVE FIX FOR THE SSL ERROR ---
+# We are explicitly telling MongoClient to use certifi's certificates.
 client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client.get_database('student_companion_db')
 # --- END OF FIX ---
@@ -45,7 +45,7 @@ def create_app():
             return User(user_doc)
         return None
 
-    # We remove the local connection test print statement as it's not needed for deployment.
+    # We remove the local connection test print() as it's not needed for deployment.
 
     from . import routes
     app.register_blueprint(routes.bp)
