@@ -5,3 +5,4 @@ Flask-Login
 google-generativeai
 Markdown
 beautifulsoup4
+gunicorn
