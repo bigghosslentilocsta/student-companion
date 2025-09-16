@@ -10,11 +10,11 @@ load_dotenv()
 
 MONGO_URI = os.getenv('MONGO_URI')
 
-# --- THIS IS THE CORRECTED DATABASE CONNECTION ---
-# We are telling MongoClient to use certifi's certificates for a secure connection
+# --- THIS IS THE DEFINITIVE FIX ---
+# We are explicitly telling MongoClient to use certifi's certificates.
 client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client.get_database('student_companion_db')
-# --- END OF CORRECTION ---
+# --- END OF FIX ---
 
 login_manager = LoginManager()
 
@@ -23,7 +23,7 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'a_default_secret_key_for_development')
     app.config['ADMIN_EMAIL'] = os.getenv('ADMIN_EMAIL')
 
-    # Cloudinary Config
+    # Cloudinary Config (even if unused, it prevents errors in old code)
     cloudinary.config(
         cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
         api_key = os.getenv('CLOUDINARY_API_KEY'),
@@ -45,11 +45,8 @@ def create_app():
             return User(user_doc)
         return None
 
-    try:
-        client.admin.command('ping')
-        print("✅ Successfully connected to MongoDB Atlas!")
-    except Exception as e:
-        print(f"❌ Failed to connect to MongoDB Atlas. Error: {e}")
+    # We remove the local connection test as it's not needed for deployment
+    # and can sometimes hide the real error in the logs.
 
     from . import routes
     app.register_blueprint(routes.bp)
