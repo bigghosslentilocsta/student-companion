@@ -11,7 +11,7 @@ load_dotenv()
 MONGO_URI = os.getenv('MONGO_URI')
 
 # --- THIS IS THE DEFINITIVE FIX ---
-# We are explicitly telling MongoClient to use certifi's certificates.
+# We are explicitly telling MongoClient to use certifi's certificates for the secure connection.
 client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client.get_database('student_companion_db')
 # --- END OF FIX ---
@@ -23,7 +23,7 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'a_default_secret_key_for_development')
     app.config['ADMIN_EMAIL'] = os.getenv('ADMIN_EMAIL')
 
-    # Cloudinary Config (even if unused, it prevents errors in old code)
+    # Cloudinary Config (needed for the old code to not crash)
     cloudinary.config(
         cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
         api_key = os.getenv('CLOUDINARY_API_KEY'),
@@ -45,8 +45,7 @@ def create_app():
             return User(user_doc)
         return None
 
-    # We remove the local connection test as it's not needed for deployment
-    # and can sometimes hide the real error in the logs.
+    # We remove the local connection test print statement as it's not needed for deployment.
 
     from . import routes
     app.register_blueprint(routes.bp)
