@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card h2 { margin: 0 0 10px; }
+        .dashboard { max-width: 800px; margin: auto; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Welcome, Admin</h1>
+
+        <div class="card">
+            <h2>👥 Total Users</h2>
+            <p>5 registered users</p>
+        </div>
+
+        <div class="card">
+            <h2>📝 Notes Created</h2>
+            <p>20 notes</p>
+        </div>
+
+        <div class="card">
+            <h2>📔 Diaries Logged</h2>
+            <p>15 diary entries</p>
+        </div>
+
+        <div class="card">
+            <h2>💾 Storage Usage</h2>
+            <p>0.3 GB used out of 10 GB</p>
+        </div>
+
+        <div class="card">
+            <h2>📊 System Status</h2>
+            <p>All services operational</p>
+        </div>
+    </div>
+</body>
+</html>
